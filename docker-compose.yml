@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432" # for development only
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -16,14 +18,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env.development
     ports:
       - "3000:3000"
     environment:
       DATABASE_URL: ${DATABASE_URL}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-    volumes:
-      - .:/app
-      - /app/node_modules
+      JWT_SECRET: ${JWT_SECRET}
     depends_on:
       - postgres
     networks:

@@ -10,13 +10,16 @@ COPY . .
 
 RUN npm run build
 
-FROM node:18-alpine
+FROM node:18-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app ./
+# Copy only the build output and dependencies
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/prisma /app/prisma
 
-ENV NODE_ENV=production
+RUN npm install
 
 EXPOSE 3000
 
