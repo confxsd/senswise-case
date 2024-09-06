@@ -1,14 +1,21 @@
-DOCKER_COMPOSE_DEV = docker-compose --env-file .env.development -f docker-compose.yml
-DOCKER_COMPOSE_PROD = docker-compose --env-file .env.production -f docker-compose.yml -f docker-compose.override.yml
+ENV ?= dev
 
-dev:
-	$(DOCKER_COMPOSE_DEV) up --build
+ifeq ($(ENV), dev)
+  DOCKER_COMPOSE = docker-compose --env-file .env.development -f docker-compose.yml
+else ifeq ($(ENV), prod)
+  DOCKER_COMPOSE = docker-compose --env-file .env.production -f docker-compose.yml -f docker-compose.override.yml
+else
+  $(error Unknown environment "$(ENV)")
+endif
 
-prod:
-	$(DOCKER_COMPOSE_PROD) up --build -d
+up:
+	$(DOCKER_COMPOSE) up --build
 
 build:
-	$(DOCKER_COMPOSE_DEV) build
+	$(DOCKER_COMPOSE) build
 
-postgres: ## Spin up only the PostgreSQL container for development
-	$(DOCKER_COMPOSE_DEV) up -d postgres
+postgres:
+	$(DOCKER_COMPOSE) up -d postgres
+
+down:
+	$(DOCKER_COMPOSE) down

@@ -2,16 +2,19 @@
   "name": "web-app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate-dev": "dotenv -e .env.development -- npx prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.8",
     "prisma": "^5.19.1",
@@ -19,6 +22,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@swc-node/register": "^1.10.9",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
@@ -29,9 +33,11 @@
     "eslint-config-next": "14.2.8",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   },
   "prisma": {
-    "schema": "prisma/schema.prisma"
+    "schema": "prisma/schema.prisma",
+    "seed": "npx ts-node --esm prisma/seed.ts"
   }
 }

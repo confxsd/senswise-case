@@ -13,7 +13,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1>Welcome, {JSON.stringify(user)}</h1>
+      <h1>Welcome, {user.email}</h1>
     </div>
   );
 }

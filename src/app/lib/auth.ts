@@ -30,7 +30,7 @@ export function getTokenFromCookies() {
   const token = cookies().get("token")?.value;
   if (!token) return null;
   try {
-    return jwt.verify(token, JWT_SECRET);
+    return jwt.verify(token, JWT_SECRET) as { userId: string; email: string };
   } catch (error) {
     return null;
   }
