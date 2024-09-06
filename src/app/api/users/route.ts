@@ -54,3 +54,34 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Server Error" }, { status: 500 });
   }
 }
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+
+  const page = Number(searchParams.get("page")) || 1;
+  const pageSize = Number(searchParams.get("pageSize")) || 5;
+
+  const age = searchParams.get("age")
+    ? Number(searchParams.get("age"))
+    : undefined;
+
+  const skip = (page - 1) * pageSize;
+
+  const where = age ? { age: { equals: age } } : {};
+
+  const users = await prisma.user.findMany({
+    where,
+    skip,
+    take: pageSize,
+    orderBy: { createdAt: "desc" },
+  });
+
+  const totalUsers = await prisma.user.count({ where });
+
+  return NextResponse.json({
+    users,
+    totalUsers,
+    page,
+    pageSize,
+  });
+}
