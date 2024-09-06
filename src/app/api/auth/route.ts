@@ -6,8 +6,6 @@ import { generateToken, setTokenCookie } from "@/lib/auth";
 export async function POST(request: Request) {
   const { username, password } = await request.json();
 
-  console.log(username, password);
-
   const user = await prisma.user.findUnique({ where: { username } });
 
   if (!user || !(await bcrypt.compare(password, user.password))) {

@@ -13,7 +13,6 @@ const seedAdminUser = async () => {
 
   if (existingUser) {
     console.log("Admin user already exists, skipping seeding.");
-    console.log(existingUser);
     return;
   }
 

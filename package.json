@@ -11,6 +11,7 @@
     "migrate-dev": "dotenv -e .env.development -- npx prisma migrate dev"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.19.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
@@ -19,7 +20,9 @@
     "next": "14.2.8",
     "prisma": "^5.19.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@swc-node/register": "^1.10.9",
