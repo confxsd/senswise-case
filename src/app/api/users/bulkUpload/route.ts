@@ -72,7 +72,6 @@ export async function POST(req: Request) {
         }
       } catch (error) {
         if (error instanceof z.ZodError) {
-          console.log(error);
           errors.push(
             `Validation error at row ${rowIndex}: ${error.errors.map((e) => e.message).join(" ")}`,
           );
@@ -84,8 +83,6 @@ export async function POST(req: Request) {
     if (errors.length > 0) {
       return NextResponse.json({ message: errors.join(", ") }, { status: 400 });
     }
-
-    // console.log("Users to insert:", usersToInsert);
 
     if (usersToInsert.length > 0) {
       await prisma.user.createMany({

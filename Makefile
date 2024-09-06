@@ -1,8 +1,8 @@
-ENV ?= dev
+ENV ?= production
 
-ifeq ($(ENV), dev)
+ifeq ($(ENV), development)
   DOCKER_COMPOSE = docker-compose --env-file .env.development -f docker-compose.yml
-else ifeq ($(ENV), prod)
+else ifeq ($(ENV), production)
   DOCKER_COMPOSE = docker-compose --env-file .env.production -f docker-compose.yml -f docker-compose.override.yml
 else
   $(error Unknown environment "$(ENV)")

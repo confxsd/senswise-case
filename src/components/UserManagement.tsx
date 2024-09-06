@@ -1,5 +1,6 @@
-// components/UserManagement.tsx
 "use client";
+
+import UserList from "./UserList";
 
 interface User {
   id: string;
@@ -72,15 +73,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
         />
       </div>
 
-      {/* User List */}
-      <ul className="mb-4">
-        {users.map((user) => (
-          <li key={user.id} className="p-2 border-b">
-            {user.firstName} {user.lastName}, Age: {user.age}, Email:{" "}
-            {user.email}
-          </li>
-        ))}
-      </ul>
+      <UserList users={users} />
     </div>
   );
 };

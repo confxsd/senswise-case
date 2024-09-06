@@ -16,14 +16,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const token = generateToken(user);
+    const token = await generateToken(user);
 
     const response = NextResponse.json({ message: "Login successful" });
 
-    // Set the token as an HttpOnly cookie in the response
-    response.cookies.set({
-      name: "token",
-      value: token,
+    response.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",

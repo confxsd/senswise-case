@@ -13,9 +13,11 @@ interface UserListProps {
 const UserList: React.FC<UserListProps> = ({ users }) => (
   <ul className="mb-4">
     {users.map((user) => (
-      <li key={user.id} className="p-2 border-b">
-        {user.firstName} {user.lastName}, Age: {user.age}, Email: {user.email}
-      </li>
+      <a key={user.id} href={`/dashboard/${user.id}`}>
+        <li className="p-2 border-b">
+          {user.firstName} {user.lastName}, Age: {user.age}, Email: {user.email}
+        </li>
+      </a>
     ))}
   </ul>
 );

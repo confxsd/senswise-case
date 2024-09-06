@@ -9,11 +9,11 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = getTokenFromClientCookies();
-
-    if (token) {
-      router.push("/dashboard");
-    }
+    getTokenFromClientCookies().then((token) => {
+      if (token) {
+        router.push("/dashboard");
+      }
+    });
   }, [router]);
 
   return (
