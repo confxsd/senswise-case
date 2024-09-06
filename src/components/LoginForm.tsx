@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import TextInput from "./UI/TextInput";
 import toast from "react-hot-toast";
@@ -10,29 +8,48 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogin = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    const res = await fetch("/api/auth", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+      try {
+        const res = await fetch("/api/auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
 
-    if (res.ok) {
-      router.push("/dashboard");
-    } else {
-      console.error("Failed login:", res.status, res.statusText);
-      if (res.status === 401) {
-        toast.error("Invalid username or password");
-      } else {
+        if (res.ok) {
+          router.push("/dashboard");
+        } else {
+          const errorMessage =
+            res.status === 401
+              ? "Invalid username or password"
+              : "An error occurred. Please try again later.";
+          toast.error(errorMessage);
+          console.error("Failed login:", res.status, res.statusText);
+        }
+      } catch (error) {
+        console.error("Login error:", error);
         toast.error("An error occurred. Please try again later.");
       }
+    },
+    [username, password, router],
+  );
 
-      const data = await res.json();
-      console.error(data);
-    }
-  };
+  const handleUsernameChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setUsername(e.target.value);
+    },
+    [],
+  );
+
+  const handlePasswordChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+    },
+    [],
+  );
 
   return (
     <form
@@ -46,9 +63,7 @@ const LoginForm = () => {
         type="text"
         value={username}
         placeholder="Username"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setUsername(e.target.value)
-        }
+        onChange={handleUsernameChange}
       />
 
       {/* Password Input */}
@@ -56,9 +71,7 @@ const LoginForm = () => {
         type="password"
         value={password}
         placeholder="Password"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setPassword(e.target.value)
-        }
+        onChange={handlePasswordChange}
       />
 
       {/* Submit Button */}

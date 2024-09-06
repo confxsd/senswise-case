@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import UserList from "./UserList";
 
 interface User {
@@ -27,19 +28,27 @@ const UserManagement: React.FC<UserManagementProps> = ({
   onPageChange,
   onFilterChange,
 }) => {
-  const handleAgeFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const ageValue = e.target.value ? Number(e.target.value) : undefined;
-    onFilterChange(ageValue);
-  };
+  const handlePageChange = useCallback(
+    (newPage: number) => onPageChange(newPage),
+    [onPageChange],
+  );
+
+  const handleAgeFilter = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const ageValue = e.target.value ? Number(e.target.value) : undefined;
+      onFilterChange(ageValue);
+    },
+    [onFilterChange],
+  );
 
   return (
-    <div className=" bg-white shadow-md rounded-lg p-6">
+    <div className="bg-white shadow-md rounded-lg p-6">
       <div className="flex flex-row justify-between">
         <h2 className="text-2xl font-bold">User Management</h2>
         {/* Pagination Controls */}
         <div className="flex justify-between items-center gap-4">
           <button
-            onClick={() => onPageChange(page - 1)}
+            onClick={() => handlePageChange(page - 1)}
             disabled={page === 1}
             className="py-2 px-4 border rounded hover:shadow-md hover:bg-gray-200"
           >
@@ -47,7 +56,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
           </button>
           <span>Page {page}</span>
           <button
-            onClick={() => onPageChange(page + 1)}
+            onClick={() => handlePageChange(page + 1)}
             disabled={users.length < pageSize}
             className="py-2 px-4 border rounded hover:shadow-md hover:bg-gray-200"
           >
@@ -59,7 +68,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
       <div className="my-4 flex items-center gap-4">
         <label
           htmlFor="ageFilter"
-          className="block h-full text-sm whitespace-nowrap  font-medium text-gray-700"
+          className="block h-full text-sm whitespace-nowrap font-medium text-gray-700"
         >
           Filter by Age:
         </label>

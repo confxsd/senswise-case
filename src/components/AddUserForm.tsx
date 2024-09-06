@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { z } from "zod";
 import { userSchema } from "@/lib/schemas";
 import TextInput from "@/components/UI/TextInput";
@@ -47,9 +47,12 @@ const AddUserForm = () => {
     },
   });
 
-  const onSubmit = (data: UserPayload) => {
-    mutation.mutate(data);
-  };
+  const onSubmit = useCallback(
+    (data: UserPayload) => {
+      mutation.mutate(data);
+    },
+    [mutation],
+  );
 
   return (
     <form

@@ -30,7 +30,7 @@ export default function AppLayout({ children }: Props) {
             </li>
           </ul>
         </header>
-        {children}
+        <main>{children}</main>
         <Toaster position="top-right" />
       </>
     </QueryClientProvider>

@@ -32,7 +32,7 @@ Before you begin, ensure you have the following installed:
 
 1. Set up the environment variables:
 
-   Create a `.env` file in the root of the project with using `.env.example` as a template.
+   Create a `.env.development` and `.env.production` files in the root of the project with using `.env.example` as a template.
 
 2. Start the application using Docker:
 

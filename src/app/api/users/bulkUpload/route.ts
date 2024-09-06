@@ -1,19 +1,9 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { z } from "zod";
-import * as XLSX from "xlsx";
+import { userSchema } from "@/lib/schemas";
 import bcrypt from "bcryptjs";
-
-const userSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  surname: z.string().min(1, "Surname is required"),
-  email: z.string().email("Invalid email address"),
-  age: z
-    .number()
-    .min(1, "Age must be a positive number")
-    .max(100, "Age must be less than 100"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+import { NextResponse } from "next/server";
+import * as XLSX from "xlsx";
+import { z } from "zod";
 
 export async function POST(req: Request) {
   try {
@@ -46,8 +36,8 @@ export async function POST(req: Request) {
     for (const row of rows) {
       try {
         const parsedUser = userSchema.parse({
-          name: row.name,
-          surname: row.surname,
+          firstName: row.firstName,
+          lastName: row.lastName,
           email: row.email,
           age: Number(row.age),
           password: row.password,
@@ -63,8 +53,8 @@ export async function POST(req: Request) {
           );
         } else {
           usersToInsert.push({
-            firstName: parsedUser.name,
-            lastName: parsedUser.surname,
+            firstName: parsedUser.firstName,
+            lastName: parsedUser.lastName,
             email: parsedUser.email,
             age: parsedUser.age,
             password: await bcrypt.hash(parsedUser.password, 10),

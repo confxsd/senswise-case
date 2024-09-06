@@ -1,8 +1,6 @@
-"use client";
-
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
 
 type FormData = {
@@ -40,14 +38,17 @@ const ExcelUploadForm = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    const file = data.file[0];
-    if (file) {
-      mutation.mutate(file);
-    } else {
-      setErrorMessage("Please select a file to upload");
-    }
-  };
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      const file = data.file[0];
+      if (file) {
+        mutation.mutate(file);
+      } else {
+        setErrorMessage("Please select a file to upload");
+      }
+    },
+    [mutation],
+  );
 
   return (
     <div className="my-8 p-6 bg-white shadow-md rounded-lg">

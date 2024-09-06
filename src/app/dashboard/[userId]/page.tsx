@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import UserDetails from "@/components/UserDetails";
 
 interface User {
@@ -20,28 +20,27 @@ interface UserDetailPageProps {
 const UserDetailPage: React.FC<UserDetailPageProps> = ({ params }) => {
   const { userId } = params;
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch(`/api/users/${userId}`);
-        if (!res.ok) {
-          throw new Error("Failed to fetch user");
-        }
-        const data = await res.json();
-        setUser(data);
-      } catch (err: any) {
-        console.error(err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
+  const fetchUser = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/users/${userId}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch user");
       }
-    };
-
-    fetchUser();
+      const data = await res.json();
+      setUser(data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, [userId]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
