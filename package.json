@@ -22,7 +22,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@swc-node/register": "^1.10.9",
