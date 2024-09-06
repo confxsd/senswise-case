@@ -13,8 +13,26 @@ export default function AppLayout({ children }: Props) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
-      <Toaster position="top-right" />
+      <>
+        <header className="py-8 absolute top-0 left-0 right-0">
+          <ul className="flex justify-center space-x-4">
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/dashboard">Dashboard</a>
+            </li>
+            <li>
+              <a href="/dashboard/add">Add</a>
+            </li>
+            <li>
+              <a href="/dashboard/addMany">Add Many</a>
+            </li>
+          </ul>
+        </header>
+        {children}
+        <Toaster position="top-right" />
+      </>
     </QueryClientProvider>
   );
 }
